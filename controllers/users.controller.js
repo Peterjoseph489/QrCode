@@ -54,4 +54,26 @@ const registerUser = async (req, res)=>{
             status: 'Failed!'
         })
     }
-}
+};
+
+
+const getOneUser = async (req, res)=>{
+    try {
+        const query = req.query;
+        const theUser = await userModel.find(query);
+
+        res.status(200).json({
+            message: "Success",
+            data: theUser
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            status: 'Failed!'
+        })
+    }
+};
+
+
+module.exports = { registerUser, getOneUser };
