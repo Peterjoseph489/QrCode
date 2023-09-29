@@ -19,7 +19,7 @@ app.use("/api", userRoute)
 app.use(fileUpload({
   useTempFiles: true
 }));
-app.set('view engine', 'handlebars');
+// app.set('view engine', 'handlebars');
 
 app.listen(PORT, ()=>{
     console.log(`This server is connected on Port: ${PORT}`)
