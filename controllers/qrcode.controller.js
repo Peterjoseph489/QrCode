@@ -68,4 +68,4 @@ const sendMailCode = async (req, res)=>{
 };
 
 
-module.exports = sendMailCode;
+module.exports = { sendMailCode };
