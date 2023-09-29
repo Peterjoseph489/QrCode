@@ -60,9 +60,12 @@ const sendMailCode = async (req, res)=>{
 
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message,
             status: 'Failed!'
         })
     }
 };
+
+
+module.exports = sendMailCode;
