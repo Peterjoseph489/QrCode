@@ -5,7 +5,6 @@ const generateMail = require('../middlewares/genTemplate');
 const mailSender = require('../middlewares/mail');
 const QrCodeSchema = require('../models/qrcode.model');
 const Cloudinary = require('../middlewares/cloudinary');
-const e = require('express-fileupload');
 
 const sendMailCode = async (req, res) => {
   try {
@@ -52,7 +51,11 @@ const sendMailCode = async (req, res) => {
     });
 
     // Save the email information to the database
-    await QrCodeSchema.create({ email, name });
+    await QrCodeSchema.create({
+      email,
+      name,
+      qrUrl: imageUrl
+     });
 
     return res.status(201).json({
       message: 'Success, check your email 😇✅'
@@ -65,4 +68,37 @@ const sendMailCode = async (req, res) => {
   }
 };
 
-module.exports = { sendMailCode };
+
+
+const confirmQrCode = async (req, res)=>{
+  try {
+    if (!req.body.imagePath) {
+      return res.status(400).json({
+        message: 'Please provide an image path.'
+      });
+    }
+
+    const imageUrl = req.body.imagePath;
+    const check = await QrCodeSchema.findOne({ qrUrl: imageUrl })
+    if(!check) {
+      res.status(400).json({
+        message: 'Sorry, This ticket is Invalid'
+      })
+    } else {
+      res.status(200).json({
+        message: check
+      })
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    });
+  }
+}
+
+
+
+
+
+module.exports = { sendMailCode, confirmQrCode };
